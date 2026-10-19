@@ -16,7 +16,9 @@ public class GeoShapeQueryFieldTest extends ModelTestCase {
     @Test
     public void toBuilder() {
         GeoShapeQueryField origin = new GeoShapeQueryField.Builder().shape(
-            s -> s.geoJson(g -> g.type("envelope").coordinates(JsonData.of(new Integer[] { 0, 6 }), JsonData.of(new Integer[] { 1, 2 })))
+            s -> s.geoJson(
+                g -> g.type(GeoShapeType.Envelope).coordinates(JsonData.of(new Integer[] { 0, 6 }), JsonData.of(new Integer[] { 1, 2 }))
+            )
         ).build();
         GeoShapeQueryField copied = origin.toBuilder().build();
 
@@ -36,12 +38,14 @@ public class GeoShapeQueryFieldTest extends ModelTestCase {
     @Test
     public void geoJsonRoundtrip() {
         GeoShapeQueryField q = new GeoShapeQueryField.Builder().shape(
-            s -> s.geoJson(g -> g.type("envelope").coordinates(JsonData.of(new Integer[] { 0, 6 }), JsonData.of(new Integer[] { 1, 2 })))
+            s -> s.geoJson(
+                g -> g.type(GeoShapeType.Envelope).coordinates(JsonData.of(new Integer[] { 0, 6 }), JsonData.of(new Integer[] { 1, 2 }))
+            )
         ).build();
 
         q = checkJsonRoundtrip(q, "{\"shape\":{\"coordinates\":[[0,6],[1,2]],\"type\":\"envelope\"}}");
 
         assertTrue(q.shape().isGeoJson());
-        assertEquals("envelope", q.shape().geoJson().type());
+        assertEquals(GeoShapeType.Envelope, q.shape().geoJson().type());
     }
 }

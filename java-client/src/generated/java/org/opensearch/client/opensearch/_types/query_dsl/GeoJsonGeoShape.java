@@ -67,7 +67,7 @@ public class GeoJsonGeoShape implements PlainJsonSerializable, ToCopyableBuilder
     private final List<JsonData> coordinates;
 
     @Nonnull
-    private final String type;
+    private final GeoShapeType type;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -92,13 +92,10 @@ public class GeoJsonGeoShape implements PlainJsonSerializable, ToCopyableBuilder
     }
 
     /**
-     * Required - The type of the GeoJSON shape (e.g. <code>envelope</code>, <code>polygon</code>).
-     * <p>
-     * API name: {@code type}
-     * </p>
+     * Required - API name: {@code type}
      */
     @Nonnull
-    public final String type() {
+    public final GeoShapeType type() {
         return this.type;
     }
 
@@ -121,7 +118,7 @@ public class GeoJsonGeoShape implements PlainJsonSerializable, ToCopyableBuilder
         generator.writeEnd();
 
         generator.writeKey("type");
-        generator.write(this.type);
+        this.type.serialize(generator, mapper);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -142,7 +139,7 @@ public class GeoJsonGeoShape implements PlainJsonSerializable, ToCopyableBuilder
      */
     public static class Builder extends ObjectBuilderBase implements CopyableBuilder<Builder, GeoJsonGeoShape> {
         private List<JsonData> coordinates;
-        private String type;
+        private GeoShapeType type;
 
         public Builder() {}
 
@@ -195,13 +192,10 @@ public class GeoJsonGeoShape implements PlainJsonSerializable, ToCopyableBuilder
         }
 
         /**
-         * Required - The type of the GeoJSON shape (e.g. <code>envelope</code>, <code>polygon</code>).
-         * <p>
-         * API name: {@code type}
-         * </p>
+         * Required - API name: {@code type}
          */
         @Nonnull
-        public final Builder type(String value) {
+        public final Builder type(GeoShapeType value) {
             this.type = value;
             return this;
         }
@@ -232,7 +226,7 @@ public class GeoJsonGeoShape implements PlainJsonSerializable, ToCopyableBuilder
 
     protected static void setupGeoJsonGeoShapeDeserializer(ObjectDeserializer<GeoJsonGeoShape.Builder> op) {
         op.add(Builder::coordinates, JsonpDeserializer.arrayDeserializer(JsonData._DESERIALIZER), "coordinates");
-        op.add(Builder::type, JsonpDeserializer.stringDeserializer(), "type");
+        op.add(Builder::type, GeoShapeType._DESERIALIZER, "type");
     }
 
     @Override

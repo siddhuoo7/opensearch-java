@@ -50366,8 +50366,7 @@ components:
       description: The shape specified using a GeoJSON object.
       properties:
         type:
-          type: string
-          description: The type of the GeoJSON shape (e.g. `envelope`, `polygon`).
+          $ref: '#/components/schemas/_common.query_dsl___GeoShapeType'
         coordinates:
           type: array
           description: The coordinates of the shape.
@@ -50436,6 +50435,21 @@ components:
           $ref: '#/components/schemas/_common___GeoShapeRelation'
       required:
         - shape
+    _common.query_dsl___GeoShapeType:
+      type: string
+      description: |-
+        The type of the GeoJSON shape. The values are the shape types the server accepts in the
+        `type` field of a `geo_shape` query shape. `circle` and `geometrycollection` are not
+        included because their additional required fields (`radius` and `geometries`
+        respectively) are not modeled by `GeoJsonGeoShape`.
+      enum:
+        - point
+        - multipoint
+        - linestring
+        - multilinestring
+        - polygon
+        - multipolygon
+        - envelope
     _common.query_dsl___GeoValidationMethod:
       type: string
       enum:
